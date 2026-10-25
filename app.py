@@ -389,7 +389,7 @@ with st.sidebar:
                     st.rerun()
                 else:
                     st.error('Incorrect password')
-    st.markdown('### 🌊 EARTHRISE')
+    st.markdown('### 🌊 EARTHRISE ENGINEERING CENTER')
     st.caption('WATER INTELLIGENCE / ANALYTICS')
     pages = ['Overview','Water quality trends','Relationships & 3D','Lake Mead']
     if st.session_state.admin_ok:
