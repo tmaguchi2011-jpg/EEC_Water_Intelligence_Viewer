@@ -306,7 +306,7 @@ def zip_export(files):
 
 
 # ─────────────────── PRESENTATION / APP UI ───────────────────
-st.set_page_config(page_title='Earthrise | Water Intelligence', page_icon='🌊', layout='wide', initial_sidebar_state='expanded')
+st.set_page_config(page_title='Earthrise Engineering Center (EEC) | Water Intelligence', page_icon='🌊', layout='wide', initial_sidebar_state='expanded')
 setup()
 seed_mead_once()
 PALETTE = ['#37C8C0','#F5B565','#6B95EC','#CD88E9','#F28583','#91B48D']
