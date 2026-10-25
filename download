@@ -1,7 +1,0 @@
-data/
-*.sqlite3*
-__pycache__/
-.git/
-.env
-*.pdf
-*.zip
