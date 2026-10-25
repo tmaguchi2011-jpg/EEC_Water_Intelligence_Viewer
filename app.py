@@ -389,7 +389,7 @@ with st.sidebar:
                     st.rerun()
                 else:
                     st.error('Incorrect password')
-    st.markdown('### 🌊 EARTHRISE ENGINEERING CENTER')
+    st.markdown('### 🌊 EEC DATA INITIATIVE')
     st.caption('WATER INTELLIGENCE / ANALYTICS')
     pages = ['Overview','Water quality trends','Relationships & 3D','Lake Mead']
     if st.session_state.admin_ok:
@@ -413,7 +413,7 @@ annual=generate_annual(rows,not show_preliminary) if not rows.empty else pd.Data
 if not selected.empty and 'year' in selected: selected['year']=pd.to_numeric(selected.year,errors='coerce')
 
 if page=='Overview':
-    hero('RESEARCH DASHBOARD','Water quality, clearly connected.','IID East Highline Canal • 2010–2025 historical context • Lake Mead reservoir intelligence')
+    hero('RESEARCH DASHBOARD','Water quality, clearly connected.','IID Canal Data• 2010–2025 historical context • Lake Mead reservoir intelligence')
     a,b,c,d=st.columns(4)
     a.metric('Stored IID PDFs',len(docs));b.metric('Measurements',len(rows));c.metric('Verified',verified_count)
     d.metric('Lake Mead months',len(lake))
