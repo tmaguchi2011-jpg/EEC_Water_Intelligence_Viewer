@@ -389,7 +389,7 @@ with st.sidebar:
                     st.rerun()
                 else:
                     st.error('Incorrect password')
-    st.markdown('### 🌊 EEC DATA INITIATIVE')
+    st.markdown('### 🌊 EARTHRISE')
     st.caption('WATER INTELLIGENCE / ANALYTICS')
     pages = ['Overview','Water quality trends','Relationships & 3D','Lake Mead']
     if st.session_state.admin_ok:
@@ -401,7 +401,6 @@ with st.sidebar:
     st.divider()
     st.caption('Historical database: persistent storage enabled')
     st.caption('Lake Mead: U.S. Bureau of Reclamation')
-    st.caption('Earthrise Engineering Center (EEC)')
 
 rows=fetch('measurements');docs=fetch('documents');lake=fetch('mead')
 if not st.session_state.admin_ok:
@@ -414,7 +413,7 @@ annual=generate_annual(rows,not show_preliminary) if not rows.empty else pd.Data
 if not selected.empty and 'year' in selected: selected['year']=pd.to_numeric(selected.year,errors='coerce')
 
 if page=='Overview':
-    hero('RESEARCH DASHBOARD','Water quality, clearly connected.','IID Canal Data• 2010–2025 historical context • Lake Mead reservoir intelligence')
+    hero('RESEARCH DASHBOARD','Water quality, clearly connected.','IID East Highline Canal • 2010–2025 historical context • Lake Mead reservoir intelligence')
     a,b,c,d=st.columns(4)
     a.metric('Stored IID PDFs',len(docs));b.metric('Measurements',len(rows));c.metric('Verified',verified_count)
     d.metric('Lake Mead months',len(lake))
@@ -560,20 +559,39 @@ elif page=='Relationships & 3D':
                         a.metric('Pearson r',f'{r:+.3f}');b.metric('Spearman ρ',f'{s:+.3f}')
                         st.caption(f'Pearson p={p:.4g}; Spearman p={sp:.4g}; n={len(paired)}. Exploratory association, not causal evidence.')
             st.subheader('3D relationship explorer')
-            choices=[p for p in numeric if p not in (x,y)]
-            if 'lake_mead_ft' in w and w.lake_mead_ft.notna().sum():choices=['lake_mead_ft']+choices
-            if not choices or x==y:st.info('Choose different X/Y parameters and add Lake Mead data or a third parameter for 3D.')
+            # Independent controls; the 2D scatter selectors above do not affect the 3D plot.
+            axes_available=[c for c in w.columns if c != 'year' and pd.api.types.is_numeric_dtype(w[c]) and w[c].notna().any()]
+            if len(axes_available) < 3:
+                st.info('At least three parameters with data are required for a 3D chart.')
             else:
-                z=st.selectbox('3D Z axis',choices)
-                tri=w[['year',x,y,z]].dropna()
-                st.caption(f'{len(tri)} complete observations across all three axes. 3D axes are annual paired values.')
-                if len(tri)>=3:
-                    fig=px.scatter_3d(tri,x=x,y=y,z=z,color='year',hover_data=['year'],color_continuous_scale='Turbo',opacity=.88)
-                    fig.update_traces(marker=dict(size=7,line=dict(width=.5,color='#F0FAFA')))
-                    fig.update_layout(scene=dict(bgcolor=PLOT_BG,xaxis=dict(backgroundcolor='#14263a',gridcolor='#41536a'),yaxis=dict(backgroundcolor='#14263a',gridcolor='#41536a'),zaxis=dict(backgroundcolor='#14263a',gridcolor='#41536a'),aspectmode='cube'))
-                    draw(polish(fig,660,f'3D · {x} / {y} / {z}'))
-                    st.caption('Rotate with your mouse, scroll to zoom, and hover for the year. This reveals patterns but should be paired with 2D statistics.')
-                else:st.warning('Not enough years have all three measures. Choose other variables or add more IID reports.')
+                default_x='Turbidity' if 'Turbidity' in axes_available else axes_available[0]
+                default_y='Aluminum' if 'Aluminum' in axes_available else next(c for c in axes_available if c != default_x)
+                default_z='lake_mead_ft' if 'lake_mead_ft' in axes_available else next(c for c in axes_available if c not in (default_x,default_y))
+                axis_cols=st.columns(3)
+                with axis_cols[0]:
+                    x3=st.selectbox('3D X axis',axes_available,index=axes_available.index(default_x),key='independent_3d_x')
+                with axis_cols[1]:
+                    y3=st.selectbox('3D Y axis',axes_available,index=axes_available.index(default_y),key='independent_3d_y')
+                with axis_cols[2]:
+                    z3=st.selectbox('3D Z axis',axes_available,index=axes_available.index(default_z),key='independent_3d_z')
+                if len({x3,y3,z3}) != 3:
+                    st.warning('Please select three different variables for X, Y and Z.')
+                else:
+                    tri=w[['year',x3,y3,z3]].dropna().copy()
+                    st.caption(f'{len(tri)} complete annual observations for {x3}, {y3}, and {z3}. Only years with all three measurements are plotted.')
+                    if len(tri)>=3:
+                        fig=px.scatter_3d(tri,x=x3,y=y3,z=z3,color='year',hover_data=['year'],
+                                          color_continuous_scale='Turbo',opacity=.88)
+                        fig.update_traces(marker=dict(size=7,line=dict(width=.5,color='#F0FAFA')))
+                        fig.update_layout(scene=dict(bgcolor=PLOT_BG,
+                            xaxis=dict(title=x3,backgroundcolor='#14263a',gridcolor='#41536a'),
+                            yaxis=dict(title=y3,backgroundcolor='#14263a',gridcolor='#41536a'),
+                            zaxis=dict(title=z3,backgroundcolor='#14263a',gridcolor='#41536a'),
+                            aspectmode='cube'))
+                        draw(polish(fig,660,f'3D · {x3} / {y3} / {z3}'))
+                        st.caption('Rotate by dragging, scroll to zoom, hover to inspect the year. 3D visualization is exploratory, not evidence of causation.')
+                    else:
+                        st.warning('Fewer than three years contain all selected parameters. Try another combination or verify additional measurements.')
             st.subheader('Pairwise chemistry matrix')
             valid=[p for p in numeric if w[p].notna().sum()>=3]
             if len(valid)>=2:
