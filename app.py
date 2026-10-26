@@ -389,7 +389,7 @@ with st.sidebar:
                     st.rerun()
                 else:
                     st.error('Incorrect password')
-    st.markdown('### 🌊 EARTHRISE')
+    st.markdown('### 🌊 EEC DATA INITIATIVE')
     st.caption('WATER INTELLIGENCE / ANALYTICS')
     pages = ['Overview','Water quality trends','Relationships & 3D','Lake Mead']
     if st.session_state.admin_ok:
@@ -401,6 +401,7 @@ with st.sidebar:
     st.divider()
     st.caption('Historical database: persistent storage enabled')
     st.caption('Lake Mead: U.S. Bureau of Reclamation')
+    st.caption('Earthrise Engineering Center (EEC)')
 
 rows=fetch('measurements');docs=fetch('documents');lake=fetch('mead')
 if not st.session_state.admin_ok:
