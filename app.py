@@ -403,7 +403,7 @@ with st.sidebar:
     st.caption('Lake Mead: U.S. Bureau of Reclamation')
     st.sidebar.markdown(
     "[Earthrise Engineering Center (EEC)](https://earthrisetoll.com/eec-engineering-center)"
-)
+    )
 
 rows=fetch('measurements');docs=fetch('documents');lake=fetch('mead')
 if not st.session_state.admin_ok:
