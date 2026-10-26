@@ -403,17 +403,17 @@ with st.sidebar:
     st.caption('Lake Mead: U.S. Bureau of Reclamation')
     st.sidebar.markdown(
     st.sidebar.markdown(
-    """
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="https://earthrisetoll.com/eec-engineering-center"
-           target="_blank"
-           rel="noopener noreferrer"
-           style="color: #1E88E5; text-decoration: none; font-size: 13px;">
-            Earthrise Engineering Center (EEC)
-        </a>
-    </div>
-    """,
-    unsafe_allow_html=True
+        """
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="https://earthrisetoll.com/eec-engineering-center"
+               target="_blank"
+               rel="noopener noreferrer"
+               style="color: #1E88E5; text-decoration: none; font-size: 13px;">
+                Earthrise Engineering Center (EEC)
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
 rows=fetch('measurements');docs=fetch('documents');lake=fetch('mead')
