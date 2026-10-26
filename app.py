@@ -402,7 +402,18 @@ with st.sidebar:
     st.caption('Historical database: persistent storage enabled')
     st.caption('Lake Mead: U.S. Bureau of Reclamation')
     st.sidebar.markdown(
-    "[Earthrise Engineering Center (EEC)](https://earthrisetoll.com/eec-engineering-center)"
+    st.sidebar.markdown(
+    """
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="https://earthrisetoll.com/eec-engineering-center"
+           target="_blank"
+           rel="noopener noreferrer"
+           style="color: #1E88E5; text-decoration: none; font-size: 13px;">
+            Earthrise Engineering Center (EEC)
+        </a>
+    </div>
+    """,
+    unsafe_allow_html=True
     )
 
 rows=fetch('measurements');docs=fetch('documents');lake=fetch('mead')
@@ -416,7 +427,7 @@ annual=generate_annual(rows,not show_preliminary) if not rows.empty else pd.Data
 if not selected.empty and 'year' in selected: selected['year']=pd.to_numeric(selected.year,errors='coerce')
 
 if page=='Overview':
-    hero('RESEARCH DASHBOARD','Water quality, clearly connected.','IID East Highline Canal • 2010–2025 historical context • Lake Mead reservoir intelligence')
+    hero('RESEARCH DASHBOARD','Water quality, clearly connected.','IID Water Data • 2010–2025 historical context • Lake Mead reservoir intelligence')
     a,b,c,d=st.columns(4)
     a.metric('Stored IID PDFs',len(docs));b.metric('Measurements',len(rows));c.metric('Verified',verified_count)
     d.metric('Lake Mead months',len(lake))
