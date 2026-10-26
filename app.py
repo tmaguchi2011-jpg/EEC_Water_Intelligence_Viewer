@@ -401,7 +401,9 @@ with st.sidebar:
     st.divider()
     st.caption('Historical database: persistent storage enabled')
     st.caption('Lake Mead: U.S. Bureau of Reclamation')
-    st.caption('Earthrise Engineering Center (EEC)')
+    st.sidebar.markdown(
+    "[Earthrise Engineering Center (EEC)](https://earthrisetoll.com/eec-engineering-center)"
+)
 
 rows=fetch('measurements');docs=fetch('documents');lake=fetch('mead')
 if not st.session_state.admin_ok:
